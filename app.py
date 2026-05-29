@@ -102,29 +102,29 @@ col1, col2 = st.columns(2)
 
 with col1:
 
-```
+
 price = st.number_input(
     "Enter Product Price",
     min_value=0.0,
     value=500.0
 )
-```
+
 
 with col2:
 
-```
+
 title_length = st.number_input(
     "Enter Title Length",
     min_value=1,
     value=10
 )
-```
+
 
 
 
 if st.button("Predict Rating"):
 
-```
+
 features = np.array([[price, title_length]])
 
 prediction = model.predict(features)
@@ -153,7 +153,7 @@ confidence = min(int((prediction[0] / 5) * 100), 100)
 st.progress(confidence)
 
 st.write(f"Confidence Score: {confidence}%")
-```
+
 
 
 
