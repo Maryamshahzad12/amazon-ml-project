@@ -21,11 +21,12 @@ st.markdown("""
 <style>
 
 .stApp {
-    background-color: #0f172a;
+    background-color: #081229;
 }
 
 h1, h2, h3 {
-    color: #60a5fa;
+    color: #4da6ff;
+    font-weight: bold;
 }
 
 p, label, div {
@@ -33,19 +34,31 @@ p, label, div {
     font-size: 17px;
 }
 
+[data-testid="stSidebar"] {
+    background-color: #111827;
+}
+
 .stButton>button {
     background-color: #2563eb;
     color: white;
-    border-radius: 10px;
-    height: 3em;
+    border-radius: 12px;
+    height: 3.2em;
     width: 100%;
     font-size: 18px;
     border: none;
+    transition: 0.3s;
 }
 
 .stButton>button:hover {
     background-color: #1d4ed8;
-    color: white;
+    transform: scale(1.02);
+}
+
+.metric-card {
+    background-color: #111827;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
 }
 
 </style>
@@ -53,60 +66,66 @@ p, label, div {
 
 # SIDEBAR
 
-st.sidebar.title("ML Project")
+st.sidebar.title("ML Project Dashboard")
 
 st.sidebar.write("""
-Amazon Product Rating Prediction System
+This project predicts Amazon product ratings using Machine Learning models.
 
-Machine Learning Algorithms:
+### Algorithms Used
 - Linear Regression
 - Decision Tree
 - Random Forest
+
+### Best Model
+Random Forest Regressor
 """)
 
 # TITLE
 
 st.title("Amazon Product Rating Predictor")
 
-# IMAGE
+st.write("Predict product ratings using Machine Learning.")
+
+# TOP IMAGE
 
 st.image(
-    "https://images.unsplash.com/photo-1523475472560-d2df97ec485c",
+    "https://images.unsplash.com/photo-1519389950473-47ba0277781c",
     use_container_width=True
 )
 
-# DESCRIPTION
+st.divider()
 
-st.markdown("""
+# PROJECT OVERVIEW
 
-## Project Overview
+st.subheader("Project Overview")
 
+st.write("""
 This Machine Learning project predicts Amazon product ratings based on:
 
 - Product Price
 - Product Title Length
 
-### Best Model
-Random Forest Regressor
-
+The system uses trained ML models to estimate product ratings.
 """)
 
 st.divider()
 
 # INPUT SECTION
 
+st.subheader("Enter Product Details")
+
 col1, col2 = st.columns(2)
 
 with col1:
     price = st.number_input(
-        "Enter Product Price",
+        "Product Price",
         min_value=0.0,
         value=500.0
     )
 
 with col2:
     title_length = st.number_input(
-        "Enter Title Length",
+        "Title Length",
         min_value=1,
         value=10
     )
@@ -119,9 +138,13 @@ if st.button("Predict Rating"):
 
     prediction = model.predict(features)
 
-    st.success(f"Predicted Rating: {prediction[0]:.2f}")
+    predicted_rating = round(prediction[0], 2)
 
-    # Metrics
+    st.success(f"Predicted Rating: {predicted_rating}")
+
+    st.divider()
+
+    # METRICS
 
     m1, m2, m3 = st.columns(3)
 
@@ -132,46 +155,53 @@ if st.button("Predict Rating"):
         st.metric("Title Length", title_length)
 
     with m3:
-        st.metric("Predicted Rating", f"{prediction[0]:.2f}")
+        st.metric("Predicted Rating", predicted_rating)
 
-    # Progress Bar
+    # PROGRESS BAR
 
-    st.subheader("Prediction Confidence")
+    st.subheader("Prediction Score")
 
-    confidence = min(int((prediction[0] / 5) * 100), 100)
+    confidence = min(int((predicted_rating / 5) * 100), 100)
 
     st.progress(confidence)
 
-    st.write(f"Confidence Score: {confidence}%")
-
-# GRAPH
+    st.write(f"Prediction Confidence: {confidence}%")
 
 st.divider()
 
-st.subheader("Sample Rating Analysis")
+# SAMPLE GRAPH
+
+st.subheader("Sample Product Ratings")
 
 chart_data = pd.DataFrame({
-    "Products": ["Phone", "Laptop", "Camera", "Speaker", "Tablet"],
-    "Ratings": [4.5, 4.7, 4.8, 4.0, 4.3]
+    "Products": ["Phone", "Laptop", "Camera", "Tablet", "Speaker"],
+    "Ratings": [4.5, 4.7, 4.8, 4.3, 4.0]
 })
 
 st.bar_chart(chart_data.set_index("Products"))
+
+st.divider()
+
+# SECOND IMAGE
+
+st.image(
+    "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+    use_container_width=True
+)
 
 # FOOTER
 
 st.divider()
 
-st.markdown("""
+st.subheader("Technologies Used")
 
-### Technologies Used
-
+st.write("""
 - Python
 - Pandas
 - NumPy
 - Scikit-Learn
 - Streamlit
 - Railway Deployment
-
 """)
 
 st.caption("Machine Learning Project")
