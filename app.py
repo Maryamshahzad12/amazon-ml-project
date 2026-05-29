@@ -1,23 +1,23 @@
 import streamlit as st
 import joblib
 import numpy as np
+import pandas as pd
 
-
+# PAGE CONFIG
 
 st.set_page_config(
-page_title="Amazon Product Rating Predictor",
-page_icon="🛒",
-layout="wide"
+    page_title="Amazon Product Rating Predictor",
+    page_icon="🛒",
+    layout="wide"
 )
 
-
+# LOAD MODEL
 
 model = joblib.load("best_model.pkl")
 
-
+# CUSTOM CSS
 
 st.markdown("""
-
 <style>
 
 .stApp {
@@ -49,10 +49,9 @@ p, label, div {
 }
 
 </style>
-
 """, unsafe_allow_html=True)
 
-
+# SIDEBAR
 
 st.sidebar.title("ML Project")
 
@@ -60,24 +59,23 @@ st.sidebar.write("""
 Amazon Product Rating Prediction System
 
 Machine Learning Algorithms:
+- Linear Regression
+- Decision Tree
+- Random Forest
+""")
 
-* Linear Regression
-* Decision Tree
-* Random Forest
-  """)
-
-
+# TITLE
 
 st.title("Amazon Product Rating Predictor")
 
-
+# IMAGE
 
 st.image(
-"https://images.unsplash.com/photo-1523475472560-d2df97ec485c",
-use_container_width=True
+    "https://images.unsplash.com/photo-1523475472560-d2df97ec485c",
+    use_container_width=True
 )
 
-
+# DESCRIPTION
 
 st.markdown("""
 
@@ -85,94 +83,81 @@ st.markdown("""
 
 This Machine Learning project predicts Amazon product ratings based on:
 
-* Product Price
-* Product Title Length
+- Product Price
+- Product Title Length
 
 ### Best Model
-
 Random Forest Regressor
 
 """)
 
 st.divider()
 
-
+# INPUT SECTION
 
 col1, col2 = st.columns(2)
 
 with col1:
-
-
-price = st.number_input(
-    "Enter Product Price",
-    min_value=0.0,
-    value=500.0
-)
-
+    price = st.number_input(
+        "Enter Product Price",
+        min_value=0.0,
+        value=500.0
+    )
 
 with col2:
+    title_length = st.number_input(
+        "Enter Title Length",
+        min_value=1,
+        value=10
+    )
 
-
-title_length = st.number_input(
-    "Enter Title Length",
-    min_value=1,
-    value=10
-)
-
-
-
+# PREDICTION
 
 if st.button("Predict Rating"):
 
+    features = np.array([[price, title_length]])
 
-features = np.array([[price, title_length]])
+    prediction = model.predict(features)
 
-prediction = model.predict(features)
+    st.success(f"Predicted Rating: {prediction[0]:.2f}")
 
-st.success(f"Predicted Rating: {prediction[0]:.2f}")
+    # Metrics
 
+    m1, m2, m3 = st.columns(3)
 
+    with m1:
+        st.metric("Price", f"PKR {price}")
 
-m1, m2, m3 = st.columns(3)
+    with m2:
+        st.metric("Title Length", title_length)
 
-with m1:
-    st.metric("Price", f"PKR {price}")
+    with m3:
+        st.metric("Predicted Rating", f"{prediction[0]:.2f}")
 
-with m2:
-    st.metric("Title Length", title_length)
+    # Progress Bar
 
-with m3:
-    st.metric("Predicted Rating", f"{prediction[0]:.2f}")
+    st.subheader("Prediction Confidence")
 
+    confidence = min(int((prediction[0] / 5) * 100), 100)
 
+    st.progress(confidence)
 
-st.subheader("Prediction Confidence")
+    st.write(f"Confidence Score: {confidence}%")
 
-confidence = min(int((prediction[0] / 5) * 100), 100)
-
-st.progress(confidence)
-
-st.write(f"Confidence Score: {confidence}%")
-
-
-
+# GRAPH
 
 st.divider()
 
 st.subheader("Sample Rating Analysis")
 
-chart_data = {
-"Products": ["Phone", "Laptop", "Camera", "Speaker", "Tablet"],
-"Ratings": [4.5, 4.7, 4.8, 4.0, 4.3]
-}
+chart_data = pd.DataFrame({
+    "Products": ["Phone", "Laptop", "Camera", "Speaker", "Tablet"],
+    "Ratings": [4.5, 4.7, 4.8, 4.0, 4.3]
+})
 
-st.bar_chart(
-data={
-"Ratings": chart_data["Ratings"]
-}
-)
+st.bar_chart(chart_data.set_index("Products"))
 
-
+# FOOTER
 
 st.divider()
 
@@ -180,12 +165,12 @@ st.markdown("""
 
 ### Technologies Used
 
-* Python
-* Pandas
-* NumPy
-* Scikit-Learn
-* Streamlit
-* Railway Deployment
+- Python
+- Pandas
+- NumPy
+- Scikit-Learn
+- Streamlit
+- Railway Deployment
 
 """)
 
