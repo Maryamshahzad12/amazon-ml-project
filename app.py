@@ -30,6 +30,7 @@ h1, h2, h3 {
 
 p, label, div {
     color: white;
+    font-size: 17px;
 }
 
 .stButton>button {
@@ -53,48 +54,49 @@ p, label, div {
 
 # ---------------- SIDEBAR ----------------
 
-st.sidebar.title("📊 ML Project")
+st.sidebar.title("ML Project")
 
-st.sidebar.info("""
-Amazon Product Rating Predictor
+st.sidebar.write("""
+Amazon Product Rating Prediction System
 
-✅ Machine Learning Project
+Machine Learning Algorithms:
 
-✅ Random Forest Model
-
-✅ Railway Deployment
-""")
+* Linear Regression
+* Decision Tree
+* Random Forest
+  """)
 
 # ---------------- TITLE ----------------
 
-st.title("🛒 Amazon Product Rating Predictor")
+st.title("Amazon Product Rating Predictor")
+
+# ---------------- IMAGE ----------------
 
 st.image(
 "https://images.unsplash.com/photo-1523475472560-d2df97ec485c",
 use_container_width=True
 )
 
+# ---------------- PROJECT DESCRIPTION ----------------
+
 st.markdown("""
 
-## 📌 Project Description
+## Project Overview
 
 This Machine Learning project predicts Amazon product ratings based on:
 
-* 💰 Product Price
-* 📝 Product Title Length
+* Product Price
+* Product Title Length
 
-### 🤖 Models Used
+### Best Model
 
-* Linear Regression
-* Decision Tree
-* Random Forest Regressor
+Random Forest Regressor
 
-✅ Best Model: Random Forest
 """)
 
 st.divider()
 
-# ---------------- COLUMNS ----------------
+# ---------------- INPUTS ----------------
 
 col1, col2 = st.columns(2)
 
@@ -102,7 +104,7 @@ with col1:
 
 ```
 price = st.number_input(
-    "💰 Enter Product Price",
+    "Enter Product Price",
     min_value=0.0,
     value=500.0
 )
@@ -112,7 +114,7 @@ with col2:
 
 ```
 title_length = st.number_input(
-    "📝 Enter Title Length",
+    "Enter Title Length",
     min_value=1,
     value=10
 )
@@ -120,16 +122,16 @@ title_length = st.number_input(
 
 # ---------------- PREDICTION ----------------
 
-if st.button("⭐ Predict Rating"):
+if st.button("Predict Rating"):
 
 ```
 features = np.array([[price, title_length]])
 
 prediction = model.predict(features)
 
-st.success(f"Predicted Rating: ⭐ {prediction[0]:.2f}")
+st.success(f"Predicted Rating: {prediction[0]:.2f}")
 
-# --------- METRICS ---------
+# ---------------- METRICS ----------------
 
 m1, m2, m3 = st.columns(3)
 
@@ -142,34 +144,33 @@ with m2:
 with m3:
     st.metric("Predicted Rating", f"{prediction[0]:.2f}")
 
-# --------- RESULT MESSAGE ---------
+# ---------------- PROGRESS BAR ----------------
 
-if prediction[0] >= 4.5:
+st.subheader("Prediction Confidence")
 
-    st.balloons()
+confidence = min(int((prediction[0] / 5) * 100), 100)
 
-    st.markdown("""
-    ## 😍 Excellent Product
+st.progress(confidence)
 
-    Customers are likely to love this product!
-    """)
-
-elif prediction[0] >= 4.0:
-
-    st.markdown("""
-    ## 👍 Good Product
-
-    Product has good predicted ratings.
-    """)
-
-else:
-
-    st.markdown("""
-    ## 😐 Average Product
-
-    Product may need improvements.
-    """)
+st.write(f"Confidence Score: {confidence}%")
 ```
+
+# ---------------- SAMPLE GRAPH ----------------
+
+st.divider()
+
+st.subheader("Sample Rating Analysis")
+
+chart_data = {
+"Products": ["Phone", "Laptop", "Camera", "Speaker", "Tablet"],
+"Ratings": [4.5, 4.7, 4.8, 4.0, 4.3]
+}
+
+st.bar_chart(
+data={
+"Ratings": chart_data["Ratings"]
+}
+)
 
 # ---------------- FOOTER ----------------
 
@@ -177,27 +178,15 @@ st.divider()
 
 st.markdown("""
 
-## 🚀 Technologies Used
+### Technologies Used
 
 * Python
 * Pandas
 * NumPy
 * Scikit-Learn
 * Streamlit
-* Railway
+* Railway Deployment
 
----
-
-## 📊 Features Used
-
-* Product Price
-* Product Title Length
-
----
-
-## 🌐 Deployment
-
-Deployed using Railway Cloud Platform
 """)
 
-st.caption("Made with ❤️ using Machine Learning")
+st.caption("Machine Learning Project")
