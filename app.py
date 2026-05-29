@@ -2,7 +2,7 @@ import streamlit as st
 import joblib
 import numpy as np
 
-# ---------------- PAGE CONFIG ----------------
+
 
 st.set_page_config(
 page_title="Amazon Product Rating Predictor",
@@ -10,11 +10,11 @@ page_icon="🛒",
 layout="wide"
 )
 
-# ---------------- LOAD MODEL ----------------
+
 
 model = joblib.load("best_model.pkl")
 
-# ---------------- CUSTOM CSS ----------------
+
 
 st.markdown("""
 
@@ -52,7 +52,7 @@ p, label, div {
 
 """, unsafe_allow_html=True)
 
-# ---------------- SIDEBAR ----------------
+
 
 st.sidebar.title("ML Project")
 
@@ -66,18 +66,18 @@ Machine Learning Algorithms:
 * Random Forest
   """)
 
-# ---------------- TITLE ----------------
+
 
 st.title("Amazon Product Rating Predictor")
 
-# ---------------- IMAGE ----------------
+
 
 st.image(
 "https://images.unsplash.com/photo-1523475472560-d2df97ec485c",
 use_container_width=True
 )
 
-# ---------------- PROJECT DESCRIPTION ----------------
+
 
 st.markdown("""
 
@@ -96,7 +96,7 @@ Random Forest Regressor
 
 st.divider()
 
-# ---------------- INPUTS ----------------
+
 
 col1, col2 = st.columns(2)
 
@@ -120,7 +120,7 @@ title_length = st.number_input(
 )
 ```
 
-# ---------------- PREDICTION ----------------
+
 
 if st.button("Predict Rating"):
 
@@ -131,7 +131,7 @@ prediction = model.predict(features)
 
 st.success(f"Predicted Rating: {prediction[0]:.2f}")
 
-# ---------------- METRICS ----------------
+
 
 m1, m2, m3 = st.columns(3)
 
@@ -144,7 +144,7 @@ with m2:
 with m3:
     st.metric("Predicted Rating", f"{prediction[0]:.2f}")
 
-# ---------------- PROGRESS BAR ----------------
+
 
 st.subheader("Prediction Confidence")
 
@@ -155,7 +155,7 @@ st.progress(confidence)
 st.write(f"Confidence Score: {confidence}%")
 ```
 
-# ---------------- SAMPLE GRAPH ----------------
+
 
 st.divider()
 
@@ -172,7 +172,7 @@ data={
 }
 )
 
-# ---------------- FOOTER ----------------
+
 
 st.divider()
 
